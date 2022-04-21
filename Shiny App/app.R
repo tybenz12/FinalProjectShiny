@@ -216,15 +216,15 @@ Data2021 <- read_csv("2021FullPitchData.csv",
 
 FinalData <- rbind(Data2016, Data2017, Data2018, Data2019, Data2020, Data2021) %>% 
   group_by(player_id) %>% 
-  mutate(full_player_name = paste(last_name, first_name, sep = ", "))
+  mutate(full_player_name_id = paste(last_name, first_name, player_id, sep = ", "))
 
 ui <- fluidPage(
   selectInput(inputId = "Player", 
               label = "Select a Player to View Stats", 
               choices = FinalData %>% 
-                arrange(full_player_name) %>% 
-                distinct(full_player_name) %>% 
-                pull(full_player_name), 
+                arrange(full_player_name_id) %>% 
+                distinct(full_player_name_id) %>% 
+                pull(full_player_name_id), 
               multiple = FALSE), 
   sliderInput(inputId = "Years", 
               label = "Year Range",
@@ -234,12 +234,11 @@ ui <- fluidPage(
               sep = ""),
 )
 
-#Year error with Austin Adams
 
 server <- function(input, output) {
   player_name <- reactive({
     FinalData %>% 
-      filter(full_player_name == input$Player)
+      filter(full_player_name_id == input$Player)
   })
   
   # This is the key piece of code    

@@ -412,17 +412,19 @@ server <- function(input, output) {
           na.omit() %>%
           mutate(pitch_percent = str_c(pitch_frequency, "%")) %>%
           ggplot(aes(x = pitch_frequency, y = fct_reorder(Pitch_Type, pitch_frequency, mean, .desc=FALSE), fill = Pitch_Type)) +
-          geom_col() +
+          geom_col() + 
           geom_text(aes(label = str_c(pitch_percent, Pitch_Type, sep = "\n")), 
-                    hjust = -0.1, 
+                    hjust = 0, 
                     size = 3, 
-                    color = "black") + 
+                    color = "black",
+                    fontface = "bold",
+                    nudge_x = .5) + 
           labs(title = "Pitch Type Frequency", 
                x = "Frequency (%)", 
                y = "") + 
           scale_x_continuous(expand = expansion(mult = c(0, .65))) + 
           theme_classic() + 
-          theme(axis.text.y = element_blank(), legend.position = "none")
+          theme(axis.text.y = element_blank(), legend.position = "none") 
       })
     }
     

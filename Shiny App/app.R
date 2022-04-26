@@ -224,6 +224,7 @@ FinalData <- rbind(Data2016, Data2017, Data2018, Data2019, Data2020, Data2021) %
 
 
 ui <- fluidPage(
+  choices <- 
   selectInput(inputId = "Player", 
               label = "Select a Player to View Stats:", 
               choices = FinalData %>% 
@@ -240,10 +241,8 @@ ui <- fluidPage(
               choices = c("", "Average Speed by Pitch Type", 
                           "Pitch Frequency by Pitch Type", 
                           "Pitch Movement by Pitch Type"), 
-              multiple = FALSE), 
-  submitButton(text = "Show Chart"),
-  plotOutput(outputId = "pitchChart"), 
-  actionButton(inputId = "reset", text = "Reset")
+              multiple = FALSE),
+  plotOutput(outputId = "pitchChart")
 )
 
 
@@ -266,8 +265,11 @@ server <- function(input, output) {
       filter(input$Years == year)
   })
   
+  toListen <- reactive({
+    c(input$Years, input$Charts)
+  })
   
-  observeEvent(player_year(), {
+  observeEvent(toListen(), {
     FFData <- player_year() %>%
       select(c(1:12), contains("ff")) %>%
       add_column(Pitch_Type = "Four-Seam Fastball") %>%
@@ -405,13 +407,6 @@ server <- function(input, output) {
         #put pitch movement chart here
       })
     }
-  })
-  
-  observeEvent(input$reset, {
-    reset(input$Player)
-    reset(input$Years)
-    reset(input$Charts)
-    output$pitchChart <- NULL
   })
 }
 

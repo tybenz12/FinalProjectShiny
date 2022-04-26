@@ -5,7 +5,6 @@ library(rsconnect)
 library(zoo)
 library(dplyr)
 library(ggthemes)
-library(geomtextpath)
 
 Data2016 <- read_csv("2016FullPitchData.csv", 
                      col_types = cols(player_id = col_number(), 

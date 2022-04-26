@@ -244,6 +244,7 @@ ui <- fluidPage(
                           "Pitch Frequency by Pitch Type", 
                           "Pitch Movement by Pitch Type"), 
               multiple = FALSE), 
+  submitButton(text = "Show Chart"),
   plotOutput(outputId = "pitchChart")
 )
 

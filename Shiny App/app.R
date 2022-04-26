@@ -367,7 +367,16 @@ server <- function(input, output) {
     TidyPitchData <- bind_rows(FFData, SliderData, ChangeData, CurveData, SinkerData, CutterData, SplitterData, KnuckleData)
     if(input$Charts == "Average Speed by Pitch Type") {
       output$pitchChart <- renderPlot({
-        #put pitch speed plot here
+        TidyPitchData %>%
+          na.omit() %>%
+          mutate(max_speed = avg_speed + 0.5*(range_speed),
+                 min_speed = avg_speed - 0.5*(range_speed)) %>%
+          mutate(pitch_percent = str_c(pitch_frequency, "%")) %>%
+          ggplot() +
+          geom_linerange(aes(y = Pitch_Type, xmin = min_speed, xmax = max_speed, color = avg_speed), size=5) + 
+          geom_point(aes(x = avg_speed, y = Pitch_Type), size=2, shape=21, fill="white") + 
+          theme_classic() + 
+          theme(axis.text.y = element_blank(), legend.position = "bottom") 
       })
     }
     

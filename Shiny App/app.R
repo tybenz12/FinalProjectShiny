@@ -220,7 +220,7 @@ FinalData <- rbind(Data2016, Data2017, Data2018, Data2019, Data2020, Data2021) %
 
 ui <- fluidPage(
   selectInput(inputId = "Player", 
-              label = "Select a Player to View Stats", 
+              label = "Select a Player to View Stats:", 
               choices = FinalData %>% 
                 arrange(full_player_name_id) %>% 
                 distinct(full_player_name_id) %>% 
@@ -232,6 +232,13 @@ ui <- fluidPage(
               max = 2021,
               value=c(2016, 2021), 
               sep = ""),
+  selectInput(inputId = "Charts", 
+              label = "Select the Pitch Chart:", 
+              choices = c("", "Average Speed by Pitch Type", 
+                          "Pitch Frequency by Pitch Type", 
+                          "Mackenzie's Chart"), 
+              multiple = FALSE), 
+  plotOutput(outputId = "pitchChart")
 )
 
 
@@ -241,11 +248,6 @@ server <- function(input, output) {
       filter(full_player_name_id == input$Player)
   })
   
-  # This is the key piece of code    
-  # We use a combination of observeEvent and updateSelectInput
-  # There are many updateXXX() functions
-  # Think of this as observe the vegetable() (filtered to the chosen veggie)
-  # Then, make my list of variety choices and update the "variety" inputId with those choices.
   observeEvent(player_name(), {
     year <- player_name() %>% 
       summarise(yearMin = min(year), 
@@ -254,6 +256,32 @@ server <- function(input, output) {
                       min = year$yearMin,
                       max = year$yearMax,
                       value=c(year$yearMin, year$yearMax)) 
+  })
+  
+  player_year <- reactive({
+    player_name() %>% 
+      filter(min(input$Years) <= year & year <= max(input$Years))
+  })
+  
+  
+  observeEvent(player_year(), {
+    if(input$Charts == "Average Speed by Pitch Type") {
+      output$pitchChart <- renderPlot({
+        #put pitch speed plot here
+      })
+    }
+    
+    else if(input$Charts == "Pitch Frequency by Pitch Type") {
+      output$pitchChart <- renderPlot({
+        #put pitch frequency chart here
+      })
+    }
+    
+    else if(input$Charts == "Mackenzie's Chart") {
+      output$pitchChart <- renderPlot({
+        #put Mackenzie's chart here
+      })
+    }
   })
 }
 

@@ -376,9 +376,19 @@ server <- function(input, output) {
           mutate(pitch_percent = str_c(pitch_frequency, "%")) %>%
           ggplot() +
           geom_linerange(aes(y = Pitch_Type, xmin = min_speed, xmax = max_speed, color = avg_speed), size=5) + 
+          geom_linerange(aes(y = 0, xmin = 60, xmax = 65), color = "#FFFF00", size=5) +
+          geom_linerange(aes(y = 0, xmin = 65, xmax = 75), color = "#FFCC00", size=5) +
+          geom_linerange(aes(y = 0, xmin = 75, xmax = 85), color = "#FF9933", size=5) +
+          geom_linerange(aes(y = 0, xmin = 85, xmax = 95), color = "#FF3333", size=5) +
+          geom_linerange(aes(y = 0, xmin = 95, xmax = 100), color = "#990000", size=5) +
           geom_point(aes(x = avg_speed, y = Pitch_Type), size=2, shape=21, fill="white") + 
+          scale_color_stepsn(colours = c("#FFFF00", "#FFCC00", "#FF9933", "#FF3333", "#990000"), 
+                             breaks = c(60, 65, 75, 85, 95)) + 
+          labs(title = "Average Pitch Speed", 
+               x = NULL,
+               y = NULL) +
           theme_classic() + 
-          theme(axis.text.y = element_blank(), legend.position = "bottom") 
+          theme(legend.position = "bottom")
       })
     }
     

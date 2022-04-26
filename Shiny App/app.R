@@ -255,9 +255,9 @@ server <- function(input, output) {
   
   observeEvent(player_name(), {
     years <- player_name() %>% 
-      arrange(full_player_name_id) %>% 
-      distinct(full_player_name_id) %>% 
-      pull(full_player_name_id)
+      arrange(year) %>% 
+      distinct(year) %>% 
+      pull(year)
     updateSelectInput(inputId = "Years", choices = years) 
   })
   

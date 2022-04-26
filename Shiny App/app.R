@@ -243,7 +243,8 @@ ui <- fluidPage(
                           "Pitch Movement by Pitch Type"), 
               multiple = FALSE), 
   submitButton(text = "Show Chart"),
-  plotOutput(outputId = "pitchChart")
+  plotOutput(outputId = "pitchChart"), 
+  actionButton(inputId = "reset", text = "Reset")
 )
 
 
@@ -405,6 +406,13 @@ server <- function(input, output) {
         #put pitch movement chart here
       })
     }
+  })
+  
+  observeEvent(input$reset, {
+    reset(input$Player)
+    reset(input$Years)
+    reset(input$Charts)
+    output$pitchChart <- NULL
   })
 }
 

@@ -373,22 +373,36 @@ server <- function(input, output) {
           na.omit() %>%
           mutate(max_speed = avg_speed + 0.5*(range_speed),
                  min_speed = avg_speed - 0.5*(range_speed)) %>%
-          mutate(pitch_percent = str_c(pitch_frequency, "%")) %>%
+          mutate(mph_speed = str_c(avg_speed, " mph")) %>%
           ggplot() +
           geom_linerange(aes(y = Pitch_Type, xmin = min_speed, xmax = max_speed, color = avg_speed), size=5) + 
-          geom_linerange(aes(y = 0, xmin = 60, xmax = 65), color = "#FFFF00", size=5) +
+          geom_linerange(aes(y = 0, xmin = 59, xmax = 65), color = "#FFFF00", size=5) +
           geom_linerange(aes(y = 0, xmin = 65, xmax = 75), color = "#FFCC00", size=5) +
           geom_linerange(aes(y = 0, xmin = 75, xmax = 85), color = "#FF9933", size=5) +
           geom_linerange(aes(y = 0, xmin = 85, xmax = 95), color = "#FF3333", size=5) +
-          geom_linerange(aes(y = 0, xmin = 95, xmax = 100), color = "#990000", size=5) +
+          geom_linerange(aes(y = 0, xmin = 95, xmax = 105), color = "#990000", size=5) +
           geom_point(aes(x = avg_speed, y = Pitch_Type), size=2, shape=21, fill="white") + 
-          scale_color_stepsn(colours = c("#FFFF00", "#FFCC00", "#FF9933", "#FF3333", "#990000"), 
-                             breaks = c(60, 65, 75, 85, 95)) + 
+          binned_scale(aesthetics = "color",
+                       scale_name = "stepsn", 
+                       palette = function(x) c("#FFFF00", "#FFCC00", "#FF9933", "#FF3333", "#990000"),
+                       breaks = c(59, 65, 75, 85, 95, 105),
+                       limits = c(59, 105),
+                       show.limits = TRUE, 
+                       guide = "colorsteps") +
+          geom_text(aes(x = max_speed, y = Pitch_Type, label = mph_speed), 
+                    hjust = -0.5, 
+                    size = 3, 
+                    color = "black",
+                    fontface = "bold",
+                    nudge_x = .5) +
           labs(title = "Average Pitch Speed", 
-               x = NULL,
-               y = NULL) +
+               x = "Pitch Speed (mph)",
+               y = NULL) + 
+          scale_x_continuous(expand = expansion(mult = c(0, .1))) +
           theme_classic() + 
-          theme(legend.position = "bottom")
+          theme(legend.position = "none", 
+                panel.grid.major.y = element_line(color = "lightgray", size = 0.5, linetype = "dotted"), 
+                axis.text = element_text(colour = "black"))
       })
     }
     

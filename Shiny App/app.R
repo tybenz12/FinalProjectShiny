@@ -3,6 +3,9 @@ library(tidyverse)
 library(lubridate)
 library(rsconnect)
 library(zoo)
+library(dplyr)
+library(ggthemes)
+library(geomtextpath)
 
 Data2016 <- read_csv("2016FullPitchData.csv", 
                      col_types = cols(player_id = col_number(), 
@@ -214,9 +217,12 @@ Data2021 <- read_csv("2021FullPitchData.csv",
                                       kn_avg_break_z = col_number(), kn_avg_break = col_number(),
                                       kn_range_speed = col_number(), `...69` = col_skip()), skip = 1, na = "0")
 
+
 FinalData <- rbind(Data2016, Data2017, Data2018, Data2019, Data2020, Data2021) %>% 
   group_by(player_id) %>% 
   mutate(full_player_name_id = paste(last_name, first_name, player_id, sep = ", "))
+
+
 
 ui <- fluidPage(
   selectInput(inputId = "Player", 

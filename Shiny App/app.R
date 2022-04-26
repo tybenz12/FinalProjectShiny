@@ -232,12 +232,10 @@ ui <- fluidPage(
                 distinct(full_player_name_id) %>% 
                 pull(full_player_name_id), 
               multiple = FALSE), 
-  sliderInput(inputId = "Years", 
-              label = "Year Range",
-              min = 2016,
-              max = 2021,
-              value=c(2016, 2021), 
-              sep = ""),
+  selectInput(inputId = "Years", 
+              label = "Select the Year",
+              choices = c(2016, 2017, 2018, 2019, 2020, 2021), 
+              multiple = FALSE),
   selectInput(inputId = "Charts", 
               label = "Select the Pitch Chart:", 
               choices = c("", "Average Speed by Pitch Type", 
@@ -256,18 +254,16 @@ server <- function(input, output) {
   })
   
   observeEvent(player_name(), {
-    year <- player_name() %>% 
-      summarise(yearMin = min(year), 
-                yearMax = max(year))
-    updateSliderInput(inputId = "Years", 
-                      min = year$yearMin,
-                      max = year$yearMax,
-                      value=c(year$yearMin, year$yearMax)) 
+    years <- player_name() %>% 
+      arrange(full_player_name_id) %>% 
+      distinct(full_player_name_id) %>% 
+      pull(full_player_name_id)
+    updateSelectInput(inputId = "Years", choices = years) 
   })
   
   player_year <- reactive({
     player_name() %>% 
-      filter(min(input$Years) <= year & year <= max(input$Years))
+      filter(input$Years == year)
   })
   
   

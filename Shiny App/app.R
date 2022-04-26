@@ -236,7 +236,7 @@ ui <- fluidPage(
               label = "Select the Pitch Chart:", 
               choices = c("", "Average Speed by Pitch Type", 
                           "Pitch Frequency by Pitch Type", 
-                          "Mackenzie's Chart"), 
+                          "Pitch Movement by Pitch Type"), 
               multiple = FALSE), 
   plotOutput(outputId = "pitchChart")
 )
@@ -277,9 +277,9 @@ server <- function(input, output) {
       })
     }
     
-    else if(input$Charts == "Mackenzie's Chart") {
+    else if(input$Charts == "Pitch Movement by Pitch Type") {
       output$pitchChart <- renderPlot({
-        #put Mackenzie's chart here
+        #put pitch movement chart here
       })
     }
   })

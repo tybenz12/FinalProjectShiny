@@ -379,7 +379,6 @@ server <- function(input, output) {
         TidyPitchData %>%
           na.omit() %>%
           mutate(pitch_percent = str_c(pitch_frequency, "%")) %>%
-          filter(last_name == "Greinke", year == 2019) %>%
           ggplot(aes(x = pitch_frequency, y = fct_reorder(Pitch_Type, pitch_frequency, mean, .desc=FALSE), fill = Pitch_Type)) +
           geom_col() +
           geom_text(aes(label = str_c(pitch_percent, Pitch_Type, sep = "\n")), 

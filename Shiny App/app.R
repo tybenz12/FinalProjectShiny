@@ -414,7 +414,27 @@ server <- function(input, output) {
     
     else if(input$Charts == "Pitch Movement by Pitch Type") {
       output$pitchChart <- renderPlot({
-        #put pitch movement chart here
+        TidyPitchData %>%
+          ggplot() +
+          geom_point(aes(x = avg_break_x,
+                         y = avg_break_z,
+                         color = avg_speed,
+                         shape = Pitch_Type,
+                         size = 8)) +
+          geom_text(aes(x = avg_break_x, 
+                        y = avg_break_z,
+                        label = Pitch_Type),
+                    nudge_x = 1.5) +
+          scale_shape_manual(values = c(0, 1, 2, 3, 4, 5, 8, 10)) +
+          scale_color_gradient(low = "orange", high = "red") +
+          scale_size(guide = "none") +
+          labs(shape = "Pitch Type",
+               color = "Pitch Speed (mph)",
+               title = "Average Pitch Movement",
+               x = "Horizontal Break\nView from Catcher POV",
+               y = "Vertical Break") +
+          theme(legend.position="bottom") +
+          guides(shape = FALSE)
       })
     }
   })

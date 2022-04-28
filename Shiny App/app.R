@@ -455,7 +455,7 @@ server <- function(input, output) {
           theme(legend.position="bottom", 
                 panel.grid.major.x = element_line(color = "lightgray", size = 0.5, linetype = "dotted"), 
                 panel.grid.major.y = element_line(color = "lightgray", size = 0.5, linetype = "dotted")) + 
-          guides(shape = FALSE)
+          guides(shape = "none")
       })
     }
   })

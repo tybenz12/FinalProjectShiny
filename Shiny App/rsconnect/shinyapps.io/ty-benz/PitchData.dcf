@@ -1,0 +1,13 @@
+name: PitchData
+title: PitchData
+username:
+account: ty-benz
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 6192911
+bundleId: 5847250
+url: https://ty-benz.shinyapps.io/PitchData/
+when: 1651157783.24703
+lastSyncTime: 1651157783.24704
+asMultiple: FALSE
+asStatic: FALSE

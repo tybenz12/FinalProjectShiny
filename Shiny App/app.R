@@ -448,8 +448,8 @@ server <- function(input, output) {
           labs(shape = "Pitch Type", 
                color = "Pitch Speed (mph)",
                title = "Average Pitch Movement",
-               x = "Horizontal Break\nView from Catcher POV",
-               y = "Vertical Break") + 
+               x = "Horizontal Break (inches)\nView from Catcher POV",
+               y = "Vertical Break (inches)") + 
           scale_x_continuous(expand = expansion(mult = c(.15, .25))) +
           theme_classic() + 
           theme(legend.position="bottom", 
